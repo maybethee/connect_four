@@ -1,4 +1,5 @@
 require_relative 'game'
+require_relative 'board'
 
 describe Game do
 
@@ -55,6 +56,27 @@ describe Game do
         error_message = 'invalid input, please choose valid column'
         expect(game).not_to receive(:puts).with(error_message)
         game.player_input
+      end
+    end
+  end
+
+  describe '#player_move' do
+    subject(:game) { described_class.new }
+
+    context 'when first chosen column is full, and then available column is chosen' do
+      it 'checks if chosen column is full and returns valid input when valid' do
+        full_column = ['Y', 'R', 'R', 'Y', 'R']
+        valid_column = ['Y', 'R', 'R', 'Y', 'O']
+
+        expect(game.player_move(full_column)).to be_falsey
+        expect(game.player_move(valid_column)).to eq(valid_column)
+      end
+
+      it 'sends an error message' do
+        full_column = ['Y', 'R', 'R', 'Y', 'R']
+        error_message = 'column full, please choose valid column'
+
+        expect{ game.player_move(full_column) }.to output("#{error_message}\n").to_stdout
       end
     end
   end
