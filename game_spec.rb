@@ -16,7 +16,7 @@ describe Game do
 
       end
 
-      xit 'switches current player when given valid input' do
+      xit 'switches current player once player move is resolved' do
 
       end
     end
