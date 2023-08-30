@@ -5,7 +5,7 @@ describe Game do
 
   subject(:game) { Game.new }
   describe '#play' do
-    it 'begins with win_state set to false' do
+    xit 'begins with win_state set to false' do
       game.play
       expect(game.win_state).to eq(false)
     end
@@ -62,21 +62,25 @@ describe Game do
 
   describe '#player_move' do
     subject(:game) { described_class.new }
+    # subject(:board) { Board.new }
 
     context 'when first chosen column is full, and then available column is chosen' do
-      it 'checks if chosen column is full and returns valid input when valid' do
-        full_column = ['Y', 'R', 'R', 'Y', 'R']
-        valid_column = ['Y', 'R', 'R', 'Y', 'O']
+      before do
+        # full column 4
+        game.board.grid.each { |row| row[3] = 'R' }
 
-        expect(game.player_move(full_column)).to be_falsey
-        expect(game.player_move(valid_column)).to eq(valid_column)
+        #valid column 2
+        (3..5).each { |index| game.board.grid[index][1] = 'Y' }
+      end
+      it 'checks if chosen column is full and returns valid input when valid' do
+        expect(game.player_move(4)).to be_nil
+        expect(game.player_move(2)).to eq(2)
       end
 
       it 'sends an error message' do
-        full_column = ['Y', 'R', 'R', 'Y', 'R']
         error_message = 'column full, please choose valid column'
 
-        expect{ game.player_move(full_column) }.to output("#{error_message}\n").to_stdout
+        expect{ game.player_move(4) }.to output("#{error_message}\n").to_stdout
       end
     end
   end

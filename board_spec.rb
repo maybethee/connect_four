@@ -4,14 +4,27 @@ describe Board do
 
   subject(:board) { Board.new }
   describe '#full?' do
-    it 'returns true when column is full' do
-      full_column = ['Y', 'R', 'R', 'Y', 'R', 'Y']
-      expect(board.full?(full_column)).to be_truthy
+    context 'when column is full' do
+      before do
+        # fills column 4
+        board.grid.each { |row| row[3] = 'R' }
+      end
+
+      it 'returns true' do
+        full_column = 4
+        expect(board.full?(full_column)).to be_truthy
+      end
     end
 
-    it "returns false when column contains empty symbols ('O')" do
-      valid_column = ['Y', 'R', 'R', 'Y', 'R', 'Y', 'O']
-      expect(board.full?(valid_column)).to be_falsey
+    context "when column contains empty symbols ('O')" do
+      before do
+        # fill only bottom three cells of column 1
+        (3..5).each { |index| board.grid[index][1] = 'Y' }
+      end
+      it 'returns false' do
+        valid_column = 2
+        expect(board.full?(valid_column)).to be_falsey
+      end
     end
   end
 

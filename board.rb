@@ -9,10 +9,14 @@ class Board
   end
 
   def full?(column)
-    # full? checks if an array (column) contains any symbols representing empty cells column.any? {'O'} or some each loop if i can't do any?, returns true if no empty symbols.
-    
-    #so this should actually do like, grid[column].none? or something? 
-    column.none?('O')
+    column -= 1
+
+    @grid.reverse_each do |row|
+      if row[column] == 'O'
+        return false
+      end
+    end
+    true
   end
 
   def print_board
@@ -24,7 +28,7 @@ class Board
   end
 
   def place_piece(column, symbol)
-    #symbol replaces 'O' on lowest row in corresponding column on grid
+    # symbol replaces 'O' on lowest row in corresponding column on grid
     column -= 1
 
     @grid.reverse_each do |row|
