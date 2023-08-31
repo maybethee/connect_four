@@ -12,9 +12,23 @@ class Game
   end
 
   def play
-    # player_move(player_input)
-    # place_piece(player_move)
-    # return
+    board.grid[2][5] = 'R'
+    board.grid[3][4] = 'R'
+    board.grid[4][3] = 'R'
+    board.grid[5][2] = 'R'
+    if board.check_win_diagonals
+      puts 'yea'
+    else
+      puts 'no'
+    end
+    
+    # current_move = player_move(player_input)
+    # @board.place_piece(current_move, @current_player.symbol)
+    # @board.print_board
+
+    # check win conditions
+
+    # switch_players
   end
 
   # gets column number from player
@@ -23,7 +37,7 @@ class Game
       error_message = 'invalid input, please choose valid column'
       column = gets.chomp.to_i
       # use 1 instead of 0 for first number bypasses non-numerical input.to_i being misattributed as 0
-      return column if column.between?(1, 3)
+      return column if column.between?(1, 7)
 
       puts error_message
     end
@@ -36,9 +50,13 @@ class Game
 
     puts error_message
   end
+
+  def switch_players
+    @current_player = @players.rotate!.first
+  end
 end
 
-# game = Game.new
-# game.play
+game = Game.new
+game.play
 
 

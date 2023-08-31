@@ -38,4 +38,26 @@ class Board
       end
     end
   end
+
+  # def check_win_rows
+
+  # end
+
+  # def check_win_columns
+
+  # end
+
+  def check_win_diagonals
+    6.times do |row|
+      7.times do |col|
+        diagonal1 = (0..3).collect { |i| @grid[row + i][col + i] if row + i < 6 && col + i < 7 }
+        diagonal2 = (0..3).collect { |i| @grid[row + i][col - i] if row + i < 6 && col - i >= 0 }
+        return true if diagonal1.uniq.size == 1 && %w[R Y].include?(diagonal1.first)
+        return true if diagonal2.uniq.size == 1 && %w[R Y].include?(diagonal2.first)
+      end
+    end
+
+    # no win found
+    false
+  end
 end

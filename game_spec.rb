@@ -5,15 +5,18 @@ describe Game do
 
   subject(:game) { Game.new }
   describe '#play' do
-    xit 'begins with win_state set to false' do
+    it 'begins with win_state set to false' do
       game.play
       expect(game.win_state).to eq(false)
     end
 
     context 'after receiving valid user input' do
-
-      xit 'calls place piece function when given valid input' do
-
+      it 'calls place piece function when given valid input' do
+        board = instance_double(Board)
+        allow(board).to receive(:place_piece)
+        game = Game.new(board)
+        game.play
+        expect(game).to have_receive(:place_piece)
       end
 
       xit 'switches current player once player move is resolved' do
