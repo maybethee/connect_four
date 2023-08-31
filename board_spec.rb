@@ -77,7 +77,7 @@ describe Board do
         board.grid[4][4] = 'R'
         board.grid[3][5] = 'Y'
         board.grid[2][6] = 'R'
-        board.print_board
+        # board.print_board
       end
       it 'returns false' do
         expect(board.check_win_diagonals).to be_falsey
@@ -90,7 +90,7 @@ describe Board do
         board.grid[3][4] = 'R'
         board.grid[4][3] = 'R'
         board.grid[5][2] = 'R'
-        board.print_board
+        # board.print_board
       end
       it 'returns true' do
         expect(board.check_win_diagonals).to be_truthy
@@ -103,7 +103,7 @@ describe Board do
         board.grid[3][2] = 'Y'
         board.grid[4][3] = 'Y'
         board.grid[5][4] = 'Y'
-        board.print_board
+        # board.print_board
       end
       it 'returns true' do
         expect(board.check_win_diagonals).to be_truthy
@@ -119,7 +119,7 @@ describe Board do
         board.grid[5][4] = 'R'
         board.grid[5][5] = 'Y'
         board.grid[5][6] = 'Y'
-        board.print_board
+        # board.print_board
       end
       it 'returns false' do
         expect(board.check_win_rows).to be_falsey
@@ -132,7 +132,7 @@ describe Board do
         board.grid[3][2] = 'R'
         board.grid[3][3] = 'R'
         board.grid[3][4] = 'R'
-        board.print_board
+        # board.print_board
       end
       it 'returns true' do
         expect(board.check_win_rows).to be_truthy
@@ -143,12 +143,28 @@ describe Board do
   describe '#check_win_columns' do
 
     context 'when there are no columns with four matching pieces' do
-      xit 'returns false' do
+      before do
+        board.grid[2][0] = 'Y'
+        board.grid[3][0] = 'R'
+        board.grid[4][0] = 'Y'
+        board.grid[5][0] = 'Y'
+        board.print_board
+      end
+      it 'returns false' do
+        expect(board.check_win_columns).to be_falsey
       end
     end
 
     context 'when there are four matching pieces vertically in a column' do
-      xit 'returns true' do
+      before do
+        board.grid[1][4] = 'Y'
+        board.grid[2][4] = 'Y'
+        board.grid[3][4] = 'Y'
+        board.grid[4][4] = 'Y'
+        board.print_board
+      end
+      it 'returns true' do
+        expect(board.check_win_columns).to be_truthy
       end
     end
   end

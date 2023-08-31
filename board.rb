@@ -50,9 +50,16 @@ class Board
     false
   end
 
-  # def check_win_columns
-
-  # end
+  def check_win_columns
+    # transpose columns to rows and reuse the same method for checking rows
+    @grid.transpose.each do |column|
+      column.each_cons(4) do |consecutive|
+        return true if consecutive.uniq.size == 1 && consecutive.first != 'O'
+      end
+    end
+    # no win found
+    false
+  end
 
   def check_win_diagonals
     # iterate over rows
