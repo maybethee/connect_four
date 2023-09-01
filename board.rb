@@ -76,8 +76,8 @@ class Board
         return true if diagonal2.uniq.size == 1 && %w[R Y].include?(diagonal2.first)
       end
     end
-
     # no win found
     false
   end
 end
+

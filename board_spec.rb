@@ -80,7 +80,7 @@ describe Board do
         # board.print_board
       end
       it 'returns false' do
-        expect(board.check_win_diagonals).to be_falsey
+        expect(board.check_win_diagonals).to be false
       end
     end
 
@@ -93,7 +93,7 @@ describe Board do
         # board.print_board
       end
       it 'returns true' do
-        expect(board.check_win_diagonals).to be_truthy
+        expect(board.check_win_diagonals).to be true
       end
     end
 
@@ -106,7 +106,7 @@ describe Board do
         # board.print_board
       end
       it 'returns true' do
-        expect(board.check_win_diagonals).to be_truthy
+        expect(board.check_win_diagonals).to be true
       end
     end
   end
@@ -122,7 +122,7 @@ describe Board do
         # board.print_board
       end
       it 'returns false' do
-        expect(board.check_win_rows).to be_falsey
+        expect(board.check_win_rows).to be false
       end
     end
 
@@ -135,7 +135,7 @@ describe Board do
         # board.print_board
       end
       it 'returns true' do
-        expect(board.check_win_rows).to be_truthy
+        expect(board.check_win_rows).to be true
       end
     end
   end
@@ -151,7 +151,7 @@ describe Board do
         board.print_board
       end
       it 'returns false' do
-        expect(board.check_win_columns).to be_falsey
+        expect(board.check_win_columns).to be false
       end
     end
 
@@ -164,7 +164,7 @@ describe Board do
         board.print_board
       end
       it 'returns true' do
-        expect(board.check_win_columns).to be_truthy
+        expect(board.check_win_columns).to be true
       end
     end
   end

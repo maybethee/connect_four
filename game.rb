@@ -1,8 +1,10 @@
 require_relative 'board'
 require_relative 'player'
+require 'byebug'
 
 class Game
-  attr_accessor :win_state, :board, :players, :current_player
+  attr_reader :win_state, :players, :current_player
+  attr_accessor :board
 
   def initialize(win_state: false)
     @win_state = win_state
@@ -12,23 +14,10 @@ class Game
   end
 
   def play
-    board.grid[2][5] = 'R'
-    board.grid[3][4] = 'R'
-    board.grid[4][3] = 'R'
-    board.grid[5][2] = 'R'
-    if board.check_win_diagonals
-      puts 'yea'
-    else
-      puts 'no'
-    end
-    
     # current_move = player_move(player_input)
     # @board.place_piece(current_move, @current_player.symbol)
     # @board.print_board
-
-    # check win conditions
-
-    # switch_players
+    # switch_players  
   end
 
   # gets column number from player
@@ -49,6 +38,12 @@ class Game
     return valid_column unless @board.full?(valid_column)
 
     puts error_message
+  end
+
+  def check_win
+    # byebug
+    # check if any of the check_win methods return true
+    %i[check_win_rows check_win_columns check_win_diagonals].any? { |name| @board.send(name) }
   end
 
   def switch_players
