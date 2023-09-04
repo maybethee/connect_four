@@ -148,7 +148,7 @@ describe Board do
         board.grid[3][0] = 'R'
         board.grid[4][0] = 'Y'
         board.grid[5][0] = 'Y'
-        board.print_board
+        # board.print_board
       end
       it 'returns false' do
         expect(board.check_win_columns).to be false
@@ -161,7 +161,7 @@ describe Board do
         board.grid[2][4] = 'Y'
         board.grid[3][4] = 'Y'
         board.grid[4][4] = 'Y'
-        board.print_board
+        # board.print_board
       end
       it 'returns true' do
         expect(board.check_win_columns).to be true

@@ -14,14 +14,27 @@ class Game
   end
 
   def play
-    # current_move = player_move(player_input)
-    # @board.place_piece(current_move, @current_player.symbol)
-    # @board.print_board
-    # switch_players  
+    loop do
+      column = player_input
+      player_move(column)
+      puts "i'm about to call check win, ready?"
+      if check_win
+        p "inside the check_win block"
+        @win_state = true
+        p "suddenly win state is true!!!!!"
+        break
+      end
+      puts "win state is #{@win_state.inspect}"
+      # break if @pieces_placed == 30
+      puts "calling switch_players now!"
+      switch_players
+    end
+    # @win_state ? game_end_win : game_end_draw
   end
 
   # gets column number from player
   def player_input
+    puts "Calling player_input"
     loop do
       error_message = 'invalid input, please choose valid column'
       column = gets.chomp.to_i
@@ -29,15 +42,32 @@ class Game
       return column if column.between?(1, 7)
 
       puts error_message
+
+    rescue StandardError => e
+      puts "Error in player_input: #{e.message}"
     end
   end
 
   def player_move(valid_column)
+    loop do
+      if @board.full?(valid_column)
+        puts 'column full, please choose valid column'
+        valid_column = player_input
+      else
+        # @pieces_placed += 1
+        return @board.place_piece(valid_column, @current_player.symbol)
+      end
+    end
 
-    error_message = 'column full, please choose valid column'
-    return valid_column unless @board.full?(valid_column)
 
-    puts error_message
+  #   # puts "Calling player_move with column: #{valid_column}"
+  #   error_message = 'column full, please choose valid column'
+  #   return valid_column unless @board.full?(valid_column)
+
+  #   puts error_message
+
+  # rescue StandardError => e
+  #   puts "Error in player_move: #{e.message}"
   end
 
   def check_win
@@ -51,7 +81,6 @@ class Game
   end
 end
 
-game = Game.new
-game.play
-
+# game = Game.new
+# game.play
 
