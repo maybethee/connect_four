@@ -22,19 +22,12 @@ class Game
 
       column = player_input
       player_move(column)
-      # puts "i'm about to call check win, ready?"
-      # puts "pieces placed = #{@pieces_placed}"
-
       if check_win
-        # p "inside the check_win block"
         @win_state = true
-        # p "suddenly win state is true!!!!!"
         break
       end
-      # puts "win state is #{@win_state.inspect}"
       break if @pieces_placed == 42
 
-      # puts "calling switch_players now!"
       switch_players
     end
     @win_state ? game_end_win : game_end_draw
@@ -46,7 +39,6 @@ class Game
 
   # gets column number from player
   def player_input
-    # puts "Calling player_input"
     loop do
       error_message = 'invalid input, please choose valid column'
       column = gets.chomp.to_i
@@ -67,20 +59,9 @@ class Game
         return @board.place_piece(valid_column, @current_player.symbol)
       end
     end
-
-
-  #   # puts "Calling player_move with column: #{valid_column}"
-  #   error_message = 'column full, please choose valid column'
-  #   return valid_column unless @board.full?(valid_column)
-
-  #   puts error_message
-
-  # rescue StandardError => e
-  #   puts "Error in player_move: #{e.message}"
   end
 
   def check_win
-    # byebug
     # check if any of the check_win methods return true
     %i[check_win_rows check_win_columns check_win_diagonals].any? { |name| @board.send(name) }
   end
@@ -119,7 +100,4 @@ class Game
     end
   end
 end
-
-# game = Game.new
-# game.play
 
