@@ -1,6 +1,7 @@
 class Board
 
-  attr_reader :rows, :columns, :grid
+  attr_reader :rows, :columns
+  attr_accessor :grid
 
   def initialize(rows = 6, columns = 7)
     @rows = rows
@@ -9,8 +10,8 @@ class Board
   end
 
   def full?(column)
-    puts "calling full? column is #{column.inspect}"
-    puts "here's the current game board: #{@grid.inspect}"
+    # puts "calling full? column is #{column.inspect}"
+    # puts "here's the current game board: #{@grid.inspect}"
     column -= 1
 
     @grid.reverse_each do |row|
@@ -30,20 +31,19 @@ class Board
   end
 
   def place_piece(column, symbol)
-    puts "place piece is getting called"
+    # puts "place piece is getting called"
     # symbol replaces 'O' on lowest row in corresponding column on grid
     column -= 1
 
     @grid.reverse_each do |row|
       if row[column] == 'O'
-        puts "#{row[column]} was 'O'"
+        # puts "#{row[column]} was 'O'"
         row[column] = symbol
         print_board
+        # column
         break
       end
-      "checking the next row?"
     end
-    "done checking rows!"
     column
   end
 

@@ -33,18 +33,48 @@ describe Game do
       end
 
       it 'does not switch the current player' do
-        game.play
         expect(game).not_to receive(:switch_players)
+        game.play
+      end
+
+      it 'calls the game_end_win method' do
+        expect(game).to receive(:game_end_win)
+        game.play
       end
     end
 
     context 'when the game ends in a draw' do
-      xit 'does not change the win_state to true' do
-      
+      before do
+        # set board to a tie on R's move
+        game.board = board
+        game.board.grid = [
+          %w[Y Y Y O Y Y Y],
+          %w[R R R Y R R R],
+          %w[Y Y R R R Y R],
+          %w[R R Y Y R R Y],
+          %w[Y Y R R Y Y R],
+          %w[Y Y R R Y R Y]
+        ]
+        allow(game).to receive(:player_input).and_return(4)
+
+        # set pieces placed
+        game.pieces_placed = 41
       end
 
-      xit 'calls the game_end_draw method instead of game_end_win' do
+      it 'tracks that 42 pieces have been placed' do
+        game.play
+        expect(game.pieces_placed).to eq(42)
+      end
 
+      it 'does not change the win_state to true' do
+        game.play
+        expect(game.win_state).to be false
+      end
+
+      it 'calls the game_end_draw method instead of game_end_win' do
+        expect(game).to receive(:game_end_draw)
+        expect(game).not_to receive(:game_end_win)
+        game.play
       end
     end
   end
@@ -88,27 +118,34 @@ describe Game do
   end
 
   describe '#player_move' do
-    subject(:game) { described_class.new }
-    # subject(:board) { Board.new }
+    let(:game) { Game.new }
+    let(:board) { Board.new }
 
     # these tests still fail!!!
     context 'when first chosen column is full, and then available column is chosen' do
       before do
-        # full column 4
-        game.board.grid.each { |row| row[3] = 'R' }
-        #valid column 2
-        (3..5).each { |index| game.board.grid[index][1] = 'Y' }
+        game.board = board
+        game.board.grid = [
+          %w[O O O Y O O O],
+          %w[O O O R O O O],
+          %w[O O O Y O O O],
+          %w[O R O R O O O],
+          %w[O R O Y O O O],
+          %w[O R O R O O O]
+        ]
 
-        allow(game).to receive(:player_input).and_return(2)
+        allow(game).to receive(:player_input).and_return(4, 2)
+        allow(game).to receive(:check_win).and_return(true)
       end
-      xit 'checks if chosen column is full and returns valid input when valid' do
-        expect(game.player_move(4)).to eq(2)
+      it 'does not call check_win until available column is chosen' do
+        expect(game).to receive(:check_win).once
+        game.play
       end
 
-      xit 'sends an error message' do
+      it 'sends an error message' do
         error_message = 'column full, please choose valid column'
-
-        expect{ game.player_move(4) }.to output("#{error_message}\n").to_stdout
+        game.play
+        expect { game.player_move(4) }.to output("#{error_message}\n").to_stdout
       end
     end
   end
@@ -125,7 +162,7 @@ describe Game do
         game.board.grid[0][2] = 'R'
         game.board.grid[0][3] = 'R'
       end
-      xit 'returns true' do
+      it 'returns true' do
         expect(game.check_win).to be true
       end
     end
@@ -138,7 +175,7 @@ describe Game do
         board.grid[3][4] = 'Y'
         board.grid[4][4] = 'Y'
       end
-      xit 'returns true' do
+      it 'returns true' do
         expect(game.check_win).to be true
       end
     end
@@ -151,13 +188,13 @@ describe Game do
         board.grid[4][3] = 'R'
         board.grid[5][2] = 'R'
       end
-      xit 'returns true' do
+      it 'returns true' do
         expect(game.check_win).to be true
       end
     end
 
     context 'when all check_win methods return false' do
-      xit 'returns false' do
+      it 'returns false' do
         allow(board).to receive(:check_win_rows).and_return(false)
         allow(board).to receive(:check_win_columns).and_return(false)
         allow(board).to receive(:check_win_diagonals).and_return(false)

@@ -4,32 +4,37 @@ require 'byebug'
 
 class Game
   attr_reader :win_state, :players, :current_player
-  attr_accessor :board
-
-  def initialize(win_state: false)
+  attr_accessor :board, :pieces_placed
+  
+  def initialize(pieces_placed = 0, win_state: false)
     @win_state = win_state
     @board = Board.new
     @players = [Player.new('R'), Player.new('Y')]
     @current_player = @players.first
+    @pieces_placed = pieces_placed
   end
 
   def play
+    # byebug
     loop do
       column = player_input
       player_move(column)
       puts "i'm about to call check win, ready?"
+      puts "pieces placed = #{@pieces_placed}"
+
       if check_win
-        p "inside the check_win block"
+        # p "inside the check_win block"
         @win_state = true
-        p "suddenly win state is true!!!!!"
+        # p "suddenly win state is true!!!!!"
         break
       end
       puts "win state is #{@win_state.inspect}"
-      # break if @pieces_placed == 30
+      break if @pieces_placed == 42
+
       puts "calling switch_players now!"
       switch_players
     end
-    # @win_state ? game_end_win : game_end_draw
+    @win_state ? game_end_win : game_end_draw
   end
 
   # gets column number from player
@@ -54,7 +59,7 @@ class Game
         puts 'column full, please choose valid column'
         valid_column = player_input
       else
-        # @pieces_placed += 1
+        @pieces_placed += 1
         return @board.place_piece(valid_column, @current_player.symbol)
       end
     end
@@ -78,6 +83,36 @@ class Game
 
   def switch_players
     @current_player = @players.rotate!.first
+  end
+
+  def game_end_win
+    puts "#{@current_player.symbol} wins!"
+    play_again
+  end
+
+  def game_end_draw
+    puts "it's a draw!"
+    play_again
+  end
+
+  def play_again
+    loop do
+      puts 'Do you want to play again? (y/n)'
+      answer = gets.chomp.downcase
+      case answer
+      when 'y'
+        @board = Board.new
+        @players = [Player.new('R'), Player.new('Y')]
+        @current_player = @players.first
+        @pieces_placed = 0
+        @win_state = false
+        play
+        break
+      when 'n'
+        puts 'thanks for playing!'
+        break
+      end
+    end
   end
 end
 
