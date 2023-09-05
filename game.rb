@@ -34,7 +34,7 @@ class Game
   end
 
   def introduction
-    puts "welcome to Connection of the Four, a completely unique and original game!\n\n"
+    puts "welcome to Connecting of the Four, a completely unique and original game!\n\n"
   end
 
   # gets column number from player
