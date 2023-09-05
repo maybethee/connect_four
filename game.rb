@@ -1,11 +1,12 @@
 require_relative 'board'
 require_relative 'player'
+require 'colorize'
 require 'byebug'
 
 class Game
   attr_reader :win_state, :players, :current_player
   attr_accessor :board, :pieces_placed
-  
+
   def initialize(pieces_placed = 0, win_state: false)
     @win_state = win_state
     @board = Board.new
@@ -15,12 +16,14 @@ class Game
   end
 
   def play
-    # byebug
+    introduction
     loop do
+      puts "Choose a column to place your #{@current_player.symbol.colorize(@current_player.color)}:"
+
       column = player_input
       player_move(column)
-      puts "i'm about to call check win, ready?"
-      puts "pieces placed = #{@pieces_placed}"
+      # puts "i'm about to call check win, ready?"
+      # puts "pieces placed = #{@pieces_placed}"
 
       if check_win
         # p "inside the check_win block"
@@ -28,18 +31,22 @@ class Game
         # p "suddenly win state is true!!!!!"
         break
       end
-      puts "win state is #{@win_state.inspect}"
+      # puts "win state is #{@win_state.inspect}"
       break if @pieces_placed == 42
 
-      puts "calling switch_players now!"
+      # puts "calling switch_players now!"
       switch_players
     end
     @win_state ? game_end_win : game_end_draw
   end
 
+  def introduction
+    puts "welcome to Connection of the Four, a completely unique and original game!\n\n"
+  end
+
   # gets column number from player
   def player_input
-    puts "Calling player_input"
+    # puts "Calling player_input"
     loop do
       error_message = 'invalid input, please choose valid column'
       column = gets.chomp.to_i
@@ -47,9 +54,6 @@ class Game
       return column if column.between?(1, 7)
 
       puts error_message
-
-    rescue StandardError => e
-      puts "Error in player_input: #{e.message}"
     end
   end
 
@@ -86,7 +90,7 @@ class Game
   end
 
   def game_end_win
-    puts "#{@current_player.symbol} wins!"
+    puts "#{@current_player.symbol.colorize(@current_player.color)} wins!\n\n"
     play_again
   end
 

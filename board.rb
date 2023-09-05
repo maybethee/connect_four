@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Board
 
   attr_reader :rows, :columns
@@ -23,32 +25,47 @@ class Board
   end
 
   def print_board
+    puts
     @grid.each_with_index do |row, i|
-      puts "#{@rows - i} | #{row.join(' | ')} |"
+      row_string = row.map do |cell|
+        case cell
+        when 'R'
+          cell.red
+        when 'Y'
+          cell.yellow
+        when 'O'
+          cell.light_black
+        else
+          cell
+        end
+      end.join(' | ')
+      puts "#{@rows - i} | #{row_string} |"
     end
 
     puts "    #{(1..@columns).to_a.join('   ')}"
+    puts
   end
 
   def place_piece(column, symbol)
     # puts "place piece is getting called"
+
     # symbol replaces 'O' on lowest row in corresponding column on grid
     column -= 1
 
     @grid.reverse_each do |row|
-      if row[column] == 'O'
-        # puts "#{row[column]} was 'O'"
-        row[column] = symbol
-        print_board
-        # column
-        break
-      end
+      next unless row[column] == 'O'
+
+      # puts "#{row[column]} was 'O'"
+      row[column] = symbol
+      print_board
+      break
+      # end
     end
     column
   end
 
   def check_win_rows
-    puts "checking all the rows now!"
+    # puts 'checking all the rows now!'
     @grid.each do |row|
       # in each row iterate over 4-long subarrays
       row.each_cons(4) do |consecutive|
@@ -60,7 +77,7 @@ class Board
   end
 
   def check_win_columns
-    puts "checking all the columns now!"
+    # puts "checking all the columns now!"
     # transpose columns to rows and reuse the same method for checking rows
     @grid.transpose.each do |column|
       column.each_cons(4) do |consecutive|
@@ -72,7 +89,7 @@ class Board
   end
 
   def check_win_diagonals
-    puts "checking all the diagonals now!"
+    # puts "checking all the diagonals now!"
     # iterate over rows
     6.times do |row|
       # iterate over columns
