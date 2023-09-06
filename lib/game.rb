@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative 'board'
 require_relative 'player'
 require 'colorize'
-require 'byebug'
 
 class Game
   attr_reader :win_state, :players, :current_player
@@ -10,15 +11,15 @@ class Game
   def initialize(pieces_placed = 0, win_state: false)
     @win_state = win_state
     @board = Board.new
-    @players = [Player.new('R'), Player.new('Y')]
+    @players = [Player.new('Player 1', 'R'), Player.new('Player 2', 'Y')]
     @current_player = @players.first
     @pieces_placed = pieces_placed
   end
 
   def play
-    introduction
+    board.print_board
     loop do
-      puts "Choose a column to place your #{@current_player.symbol.colorize(@current_player.color)}:"
+      puts "#{current_player.name}, choose a column to drop your #{@current_player.symbol.colorize(@current_player.color)}:"
 
       column = player_input
       player_move(column)
@@ -33,14 +34,10 @@ class Game
     @win_state ? game_end_win : game_end_draw
   end
 
-  def introduction
-    puts "welcome to Connecting of the Four, a completely unique and original game!\n\n"
-  end
-
   # gets column number from player
   def player_input
     loop do
-      error_message = 'invalid input, please choose valid column'
+      error_message = 'invalid input, please choose valid column (1 - 7)'
       column = gets.chomp.to_i
       # use 1 instead of 0 for first number bypasses non-numerical input.to_i being misattributed as 0
       return column if column.between?(1, 7)
@@ -71,33 +68,11 @@ class Game
   end
 
   def game_end_win
-    puts "#{@current_player.symbol.colorize(@current_player.color)} wins!\n\n"
-    play_again
+    puts "#{@current_player.name.colorize(@current_player.color)} wins!\n\n"
   end
 
   def game_end_draw
     puts "it's a draw!"
-    play_again
-  end
-
-  def play_again
-    loop do
-      puts 'Do you want to play again? (y/n)'
-      answer = gets.chomp.downcase
-      case answer
-      when 'y'
-        @board = Board.new
-        @players = [Player.new('R'), Player.new('Y')]
-        @current_player = @players.first
-        @pieces_placed = 0
-        @win_state = false
-        play
-        break
-      when 'n'
-        puts 'thanks for playing!'
-        break
-      end
-    end
   end
 end
 

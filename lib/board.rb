@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'colorize'
 
 class Board
@@ -24,7 +26,7 @@ class Board
 
   def print_board
     puts
-    @grid.each_with_index do |row, i|
+    @grid.each do |row|
       row_string = row.map do |cell|
         case cell
         when 'R'
@@ -37,10 +39,10 @@ class Board
           cell
         end
       end.join(' | ')
-      puts "#{@rows - i} | #{row_string} |"
+      puts "| #{row_string} |"
     end
 
-    puts "    #{(1..@columns).to_a.join('   ')}"
+    puts "  #{(1..@columns).to_a.join('   ')}"
     puts
   end
 
@@ -54,7 +56,6 @@ class Board
       row[column] = symbol
       print_board
       break
-      # end
     end
     column
   end
