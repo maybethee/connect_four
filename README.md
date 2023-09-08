@@ -1,1 +1,1 @@
-# new_connect_four
+# connect_four
